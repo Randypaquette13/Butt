@@ -2,15 +2,17 @@
 package org.usfirst.frc.team871.robot;
 
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.TalonSRX;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 
 /**
  * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the IterativeRobot
+ * functions corresponding to each mode, asI DESERVE A SNACK BREAK described in the IterativeRobot
  * documentation. If you change the name of this class or the package after
  * creating this project, you must also update the manifest file in the resource
  * directory.
@@ -26,9 +28,11 @@ public class Robot extends IterativeRobot {
 	ButtPid buttPid             = new ButtPid(0.3, 0.0, 0.0, 0.5);
 	TalonSRX pendulum           = new TalonSRX(0);
 	RobotDrive buttDrive        = new RobotDrive(1, 2);
-	
+	Compressor buttComp         = new Compressor();
+	Solenoid buttPunchy         = new Solenoid(0);
 	
     public void robotInit() {
+    	buttComp.start();
 
 
     }
@@ -49,17 +53,41 @@ public class Robot extends IterativeRobot {
     	double tSlept  = 0;
     	
         
-    	if(buttJoy.justPressed(0)){
+    	if(buttJoy.justPressed(2)){//should be x button
     		buttPid.setSetpoint(buttPid.getSetpoint() + .01);
     	}
-    	else if(buttJoy.justPressed(1)){
+    	else if(buttJoy.justPressed(1)){//should be b button
     		buttPid.setSetpoint(buttPid.getSetpoint() - .01);
     	}
     	
     	
+    	buttPunchy.set(buttJoy.getRawButton(0));
     	
     	
-    	buttDrive.tankDrive(buttJoy.getRawAxis(1), buttJoy.getRawAxis(2));
+    	//deadbanding
+    	//ahh the finer things in life
+    	
+    	double leftStickY;
+    	double rightStickY;
+    	
+    	
+    	if (buttJoy.getRawAxis(2) < .15 || buttJoy.getRawAxis(2) > -.15){
+    		leftStickY = 0;
+    	}else{
+    		leftStickY = buttJoy.getRawAxis(2);
+    	}
+    	
+    	
+    	
+    	if (buttJoy.getRawAxis(5) < .15 || buttJoy.getRawAxis(5) > -.15){
+    		rightStickY = 0;
+    	}else{
+    		rightStickY = buttJoy.getRawAxis(5);
+    	}
+    	
+    	
+    	
+    	buttDrive.tankDrive(leftStickY, rightStickY);
     	
     	
     	//pid stuffs
@@ -73,7 +101,7 @@ public class Robot extends IterativeRobot {
 			e.printStackTrace();
 		}
     	
-    	tAfter =System.currentTimeMillis();
+    	tAfter = System.currentTimeMillis();
     		
     	tSlept = tBefore - tAfter;
     	

@@ -37,7 +37,7 @@ public class ButtPid {
 		totalError += error;
 		
 		
-		output = kP * error + kI * totalError + kD * dt;
+		output = kP * error + kI * totalError + kD * error * dt;// kd is multiplied by error over time not just time duhh
 		return output;
 		
 	}
