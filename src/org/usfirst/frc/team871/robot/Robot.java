@@ -48,6 +48,34 @@ public class Robot extends IterativeRobot {
      * This is called periodically during operator control
      */
     public void teleopPeriodic() {
+    	
+    	
+    	
+    	
+    	/**
+    	 * Axis indexes:
+			1 - LeftX
+			2 - LeftY
+			3 - Triggers (Each trigger = 0 to 1, axis value = right - left)
+			4 - RightX
+			5 - RightY
+			6 - DPad Left/Right
+				
+			
+		 * Buttons
+		 	
+			A Button - 0
+			B Button - 1
+			X Button - 2
+			Y Button - 3
+			L Button - 4
+			R Button - 5
+			Back     - 6
+			Start    - 7
+    	 */
+    	
+    	
+    	    	
     	double tBefore = 0;
     	double tAfter  = 0;
     	double tSlept  = 0;

@@ -11,6 +11,8 @@ public class ButtPid {
 	double dt;
 	double error;
 	double totalError;
+	double pastError = 0;
+
 	
 	public ButtPid(double kP, double kI, double kD, double setpoint){
 		this.kP = kP;
@@ -37,7 +39,9 @@ public class ButtPid {
 		totalError += error;
 		
 		
-		output = kP * error + kI * totalError + kD * error * dt;// kd is multiplied by error over time not just time duhh
+		output = (kP * error) + (kI * totalError) + (kD * (pastError - error) / dt);// error/sec
+		
+		pastError = error;
 		return output;
 		
 	}
