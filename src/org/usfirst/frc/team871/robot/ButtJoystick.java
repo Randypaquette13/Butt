@@ -29,7 +29,7 @@ public class ButtJoystick extends Joystick{
 	public boolean justPressed(int button){
 		boolean justPressed = false;
 		
-		if (buttonValues[button] != getRawButton(button) && getRawButton(button) == true){
+		if ((buttonValues[button] != getRawButton(button)) && getRawButton(button) == true){
 			justPressed = true;
 		}
 		
@@ -41,7 +41,7 @@ public class ButtJoystick extends Joystick{
 	public boolean justReleased(int button){
 		boolean justReleased = false;
 		
-		if (buttonValues[button] != getRawButton(button) && getRawButton(button) == false){
+		if ((buttonValues[button] != getRawButton(button)) && getRawButton(button) == false){
 			justReleased = true;
 		}
 		
@@ -53,7 +53,7 @@ public class ButtJoystick extends Joystick{
 	public boolean toggleButton(int button){
 		boolean toggle = false;
 		
-		if (buttonValues[button] != getRawButton(button) && getRawButton(button) == false){
+		if ((buttonValues[button] != getRawButton(button)) && getRawButton(button) == false){
 			toggle = !toggle;
 		}
 		

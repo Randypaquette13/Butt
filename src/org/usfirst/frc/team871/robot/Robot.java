@@ -44,6 +44,10 @@ public class Robot extends IterativeRobot {
      * This is called periodically during operator control
      */
     public void teleopPeriodic() {
+    	double tBefore = 0;
+    	double tAfter  = 0;
+    	double tSlept  = 0;
+    	
         
     	if(buttJoy.justPressed(0)){
     		buttPid.setSetpoint(buttPid.getSetpoint() + .01);
@@ -52,22 +56,32 @@ public class Robot extends IterativeRobot {
     		buttPid.setSetpoint(buttPid.getSetpoint() - .01);
     	}
     	
-    	long time = System.currentTimeMillis();
+    	
     	
     	
     	buttDrive.tankDrive(buttJoy.getRawAxis(1), buttJoy.getRawAxis(2));
     	
     	
+    	//pid stuffs
     	
-    	while (buttJoy.toggleButton(2)){// pid stuff
+    	tBefore = System.currentTimeMillis();
+    	
+    	try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	tAfter =System.currentTimeMillis();
+    		
+    	tSlept = tBefore - tAfter;
+    	
+    	pendulum.set(buttPid.updatePid(buttPot.get(), tSlept));
     		
     		
     		
-    		pendulum.set(buttPid.updatePid(buttPot.get(), dt));
-    		
-    		
-    		
-    	}
+    	
     	
     	
     	
