@@ -31,6 +31,9 @@ public class Robot extends IterativeRobot {
 	Compressor buttComp         = new Compressor();
 	Solenoid buttPunchy         = new Solenoid(0);
 	
+	double tBefore = 0;
+	
+	
     public void robotInit() {
     	buttComp.start();
 
@@ -76,7 +79,7 @@ public class Robot extends IterativeRobot {
     	
     	
     	    	
-    	double tBefore = 0;
+
     	double tAfter  = 0;
     	double tSlept  = 0;
     	
@@ -95,39 +98,15 @@ public class Robot extends IterativeRobot {
     	//deadbanding
     	//ahh the finer things in life
     	
-    	double leftStickY;
-    	double rightStickY;
-    	
-    	
-    	if (buttJoy.getRawAxis(2) < .15 || buttJoy.getRawAxis(2) > -.15){
-    		leftStickY = 0;
-    	}else{
-    		leftStickY = buttJoy.getRawAxis(2);
-    	}
-    	
-    	
-    	
-    	if (buttJoy.getRawAxis(5) < .15 || buttJoy.getRawAxis(5) > -.15){
-    		rightStickY = 0;
-    	}else{
-    		rightStickY = buttJoy.getRawAxis(5);
-    	}
-    	
+    	double leftStickY  = buttJoy.deadband(buttJoy.getRawAxis(2), 0.15);
+    	double rightStickY = buttJoy.deadband(buttJoy.getRawAxis(5), 0.15);
     	
     	
     	buttDrive.tankDrive(leftStickY, rightStickY);
     	
     	
     	//pid stuffs
-    	
-    	tBefore = System.currentTimeMillis();
-    	
-    	try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
     	
     	tAfter = System.currentTimeMillis();
     		
@@ -135,7 +114,8 @@ public class Robot extends IterativeRobot {
     	
     	pendulum.set(buttPid.updatePid(buttPot.get(), tSlept));
     		
-    		
+    	tBefore = System.currentTimeMillis();
+
     		
     	
     	

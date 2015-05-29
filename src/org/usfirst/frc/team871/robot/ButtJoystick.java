@@ -2,7 +2,7 @@ package org.usfirst.frc.team871.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 
-public class ButtJoystick extends Joystick{
+public class ButtJoystick extends Joystick implements Deadbanding{
 
 	public ButtJoystick(int port) {
 		super(port);
@@ -61,6 +61,29 @@ public class ButtJoystick extends Joystick{
 		
 		return toggle;
 	}
+
+
+	
+	public double deadband(double axis, double width) {
+		
+		double deadbandValue;
+		
+    	if (axis < width || axis > -width){
+    		deadbandValue = 0;
+    	}else{
+    		deadbandValue = axis;
+    	}
+		
+		return deadbandValue;
+	}
 	
 	
 }
+
+
+
+
+
+
+
+
