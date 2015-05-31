@@ -98,8 +98,8 @@ public class Robot extends IterativeRobot {
     	//deadbanding
     	//ahh the finer things in life
     	
-    	double leftStickY  = buttJoy.deadband(buttJoy.getRawAxis(2), 0.15);
-    	double rightStickY = buttJoy.deadband(buttJoy.getRawAxis(5), 0.15);
+    	double leftStickY  = buttJoy.deadband(2, 0.15);
+    	double rightStickY = buttJoy.deadband(2, 0.15);
     	
     	
     	buttDrive.tankDrive(leftStickY, rightStickY);
