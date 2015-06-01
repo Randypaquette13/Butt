@@ -30,6 +30,10 @@ public class Robot extends IterativeRobot {
 	RobotDrive buttDrive        = new RobotDrive(1, 2);
 	Compressor buttComp         = new Compressor();
 	Solenoid buttPunchy         = new Solenoid(0);
+	Deadband leftDriveDead      = new Deadband();
+	Deadband rightDriveDead     = new Deadband();
+	
+	
 	
 	double tBefore = 0;
 	
@@ -98,8 +102,8 @@ public class Robot extends IterativeRobot {
     	//deadbanding
     	//ahh the finer things in life
     	
-    	double leftStickY  = buttJoy.deadband(2, 0.15);
-    	double rightStickY = buttJoy.deadband(2, 0.15);
+    	double leftStickY  = leftDriveDead.update(buttJoy.getRawAxis(2));
+    	double rightStickY = rightDriveDead.update(buttJoy.getRawAxis(5));
     	
     	
     	buttDrive.tankDrive(leftStickY, rightStickY);

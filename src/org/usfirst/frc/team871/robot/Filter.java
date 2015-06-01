@@ -4,14 +4,7 @@ public interface Filter {
 	
 	
 	
+	public void reset();
 	
-	public double deadband(int axis, double width);
-		
-	public double average(int axis1, int axis2);
-	
-	public double lowPassFilter(double measurement, double filterCoeficient);
-	
-	public double highPassFilter(double measurement, double filterCoeficient);
-	
-
+	public double update(double input);
 }
