@@ -2,13 +2,19 @@ package org.usfirst.frc.team871.robot;
 
 public class Deadband implements Filter{
 
-	double m_width = .15;//width default
+	double width = .15;//width default
+	
+	
+	
+	public Deadband(double width){
+		this.width = width;
+	}
 	
 	
 	
 	@Override
 	public void reset() {//frees the input
-		m_width = 1;
+		width = 1;
 		
 	}
 
@@ -17,7 +23,7 @@ public class Deadband implements Filter{
 
 		double deadbandValue;
 		
-    	if (input < m_width || input > -m_width){
+    	if (input < width || input > -width){
     		deadbandValue = 0;
     	}else{
     		deadbandValue = input;
@@ -28,7 +34,7 @@ public class Deadband implements Filter{
 	
 	
 	public void setWidth(double width){
-		m_width = width;
+		this.width = width;
 	}
 	
 	

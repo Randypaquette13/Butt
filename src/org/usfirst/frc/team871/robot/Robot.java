@@ -30,8 +30,8 @@ public class Robot extends IterativeRobot {
 	RobotDrive buttDrive        = new RobotDrive(1, 2);
 	Compressor buttComp         = new Compressor();
 	Solenoid buttPunchy         = new Solenoid(0);
-	Deadband leftDriveDead      = new Deadband();
-	Deadband rightDriveDead     = new Deadband();
+	Deadband leftDriveDead      = new Deadband(0.15);
+	Deadband rightDriveDead     = new Deadband(0.15);
 	
 	
 	

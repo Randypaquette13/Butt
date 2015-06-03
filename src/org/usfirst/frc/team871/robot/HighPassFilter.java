@@ -2,9 +2,17 @@ package org.usfirst.frc.team871.robot;
 
 public class HighPassFilter implements Filter{
 
-	
+	double filterCoeficient = 0.98;
 	double m_highPassOutput = 0;
 	double m_output         = 0;
+	
+	
+	public HighPassFilter(double filterCoeficient) {
+		this.filterCoeficient = filterCoeficient;
+	}
+	
+	
+	
 	
 	
 	@Override
@@ -23,6 +31,12 @@ public class HighPassFilter implements Filter{
 		m_output = m_highPassOutput;
 		
 		return m_highPassOutput;
+	}
+	
+	
+	public void setCoeficient(double filterCoeficient){
+		this.filterCoeficient = filterCoeficient;
+
 	}
 
 }
