@@ -61,24 +61,24 @@ public class Robot extends IterativeRobot {
     	
     	/**
     	 * Axis indexes:
-			1 - LeftX
-			2 - LeftY
-			3 - Triggers (Each trigger = 0 to 1, axis value = right - left)
-			4 - RightX
-			5 - RightY
-			6 - DPad Left/Right
+			0 - LeftX
+			1 - LeftY
+			2 - Triggers (Each trigger = 0 to 1, axis value = right - left)
+			3 - RightX
+			4 - RightY
+			5 - DPad Left/Right
 				
 			
 		 * Buttons
 		 	
-			A Button - 0
-			B Button - 1
-			X Button - 2
-			Y Button - 3
-			L Button - 4
-			R Button - 5
-			Back     - 6
-			Start    - 7
+			A Button - 1
+			B Button - 2
+			X Button - 3
+			Y Button - 4
+			L Button - 5
+			R Button - 6
+			Back     - 7
+			Start    - 8
     	 */
     	
     	
@@ -87,14 +87,14 @@ public class Robot extends IterativeRobot {
     	double tAfter  = 0;
     	double tSlept  = 0;
     	
-        
+       /* 
     	if(buttJoy.justPressed(2)){//should be x button
     		buttPid.setSetpoint(buttPid.getSetpoint() + .01);
     	}
     	else if(buttJoy.justPressed(1)){//should be b button
     		buttPid.setSetpoint(buttPid.getSetpoint() - .01);
     	}
-    	
+    	*/
     	
     	buttPunchy.set(buttJoy.getRawButton(0));
     	
@@ -102,7 +102,7 @@ public class Robot extends IterativeRobot {
     	//deadbanding
     	//ahh the finer things in life
     	
-    	double leftStickY  = leftDriveDead.update(buttJoy.getRawAxis(2));
+    	double leftStickY  = leftDriveDead.update(buttJoy.getRawAxis(1));
     	double rightStickY = rightDriveDead.update(buttJoy.getRawAxis(5));
     	
     	

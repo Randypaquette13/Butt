@@ -15,7 +15,7 @@ public class Average implements Filter{
 	
 	
 	
-	\
+	
 	
 	@Override
 	public void reset() {

@@ -9,6 +9,20 @@ public class ButtJoystick extends Joystick{
 	double m_highPassOutput = 0;
 	double m_output         = 0;
 	
+	
+	
+	
+	public enum Axes{
+		
+		LeftX
+		
+		
+		
+	}
+	
+	
+	
+	
 
 	public ButtJoystick(int port) {
 		super(port);
