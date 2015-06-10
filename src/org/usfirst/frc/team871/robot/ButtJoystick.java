@@ -1,85 +1,167 @@
 package org.usfirst.frc.team871.robot;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Joystick.AxisType;
 
 public class ButtJoystick extends Joystick{
+
+	HashMap<Axes, ArrayList<Filter>> m_axesFilters = new HashMap<ButtJoystick.Axes, ArrayList<Filter>>();
 	
 	double m_measuredBefore = 0;
 	double m_highPassOutput = 0;
 	double m_output         = 0;
 	
-	
-	
-	
 	public enum Axes{
 		
-		LeftX
+		LEFTx(0),
+		LEFTy(1),
+		lTRIGGER(2),
+		rTRIGGER(3),
+		RIGHTx(4),
+		RIGHTy(5);
 		
 		
 		
+		private final int axisNum;
+		
+		Axes(int axis){
+			axisNum = axis;
+		}
+		
+		
+		public int getAxisNum(){
+			return axisNum;
+		}
 	}
 	
 	
-	
+	public enum Buttons{
+		
+		A(1),
+		B(2),
+		X(3),
+		Y(4),
+		LB(5),
+		RB(6),
+		BACK(7),
+		START(8);
+		
+		private final int buttonNum;
+		
+		Buttons(int button){
+			buttonNum = button;
+		}
+		
+		
+		public int getButtonNum(){
+			return buttonNum;
+		}
+	}
 	
 
 	public ButtJoystick(int port) {
 		super(port);
 	}
 
-	boolean[] buttonValues = new boolean[ButtonType.kNumButton.value];
-	int[] axisValues       = new int[AxisType.kNumAxis.value];
+	boolean[] lastButtonValues = new boolean[ButtonType.kNumButton.value];
+
 	
 	
-	public boolean justChanged(int button){
+	
+	
+	
+	
+	public boolean justChanged(Buttons buttonName){
+		int button = buttonName.getButtonNum();
+		
 		boolean justChanged = false;
 		
-		if (buttonValues[button] != getRawButton(button)){
+		if (lastButtonValues[button] != getRawButton(button)){
 			justChanged = true;
 		}
 		
 		
-		buttonValues[button] = getRawButton(button);
+		lastButtonValues[button] = getRawButton(button);
 		
 		return justChanged;
 	}
 	
 	
-	public boolean justPressed(int button){
+	public boolean justPressed(Buttons buttonName){
+		int button = buttonName.getButtonNum();
+		
 		boolean justPressed = false;
 		
-		if ((buttonValues[button] != getRawButton(button)) && getRawButton(button) == true){
+		if ((lastButtonValues[button] != getRawButton(button)) && getRawButton(button) == true){
 			justPressed = true;
 		}
 		
-		buttonValues[button] = getRawButton(button);//store values
+		lastButtonValues[button] = getRawButton(button);//store values
 		
 		return justPressed;
 	}
 	
-	public boolean justReleased(int button){
+	public boolean justReleased(Buttons buttonName){
+		int button = buttonName.getButtonNum();
+		
 		boolean justReleased = false;
 		
-		if ((buttonValues[button] != getRawButton(button)) && getRawButton(button) == false){
+		if ((lastButtonValues[button] != getRawButton(button)) && getRawButton(button) == false){
 			justReleased = true;
 		}
 		
-		buttonValues[button] = getRawButton(button);//store values
+		lastButtonValues[button] = getRawButton(button);//store values
 		
 		return justReleased;
 	}
 	
-	public boolean toggleButton(int button){
+	public boolean toggleButton(Buttons buttonName){
+		
+		int button = buttonName.getButtonNum();
+		
+		
 		boolean toggle = false;
 		
-		if ((buttonValues[button] != getRawButton(button)) && getRawButton(button) == false){
+		if ((lastButtonValues[button] != getRawButton(button)) && getRawButton(button) == false){
 			toggle = !toggle;
 		}
 		
-		buttonValues[button] = getRawButton(button);//store values
+		lastButtonValues[button] = getRawButton(button);//store values
 		
 		return toggle;
+	}
+	
+	
+	
+	public void addFilter(Filter filter, Axes axis){
+		ArrayList<Filter> filtersApplied = m_axesFilters.get(axis);
+		filtersApplied.add(filter);
+		
+	}
+	
+	
+	
+	
+	
+	public double getFilteredAxisValue(Axes axis){
+		ArrayList<Filter> filtersApplied = m_axesFilters.get(axis);
+		
+		double axisVal = getAxisValue(axis);
+		
+		for(Filter f: filtersApplied){
+			axisVal = f.update(axisVal);
+		}
+		
+		return axisVal;
+	}
+	
+	
+	
+	public double getAxisValue(Axes axis){
+		return getRawAxis(axis.getAxisNum());
 	}
 	
 	

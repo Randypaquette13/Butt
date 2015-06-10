@@ -23,12 +23,14 @@ public class Deadband implements Filter{
 
 		double deadbandValue;
 		
-    	if (input < width || input > -width){
+    	if (input < width && input > -width){
     		deadbandValue = 0;
     	}else{
     		deadbandValue = input;
     	}
 		
+    	
+    	
 		return deadbandValue;
 	}
 	

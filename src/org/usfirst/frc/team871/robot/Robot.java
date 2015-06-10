@@ -1,6 +1,9 @@
 
 package org.usfirst.frc.team871.robot;
 
+import org.usfirst.frc.team871.robot.ButtJoystick.Axes;
+import org.usfirst.frc.team871.robot.ButtJoystick.Buttons;
+
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -24,14 +27,13 @@ public class Robot extends IterativeRobot {
      */
 	
 	ButtJoystick buttJoy        = new ButtJoystick(0);
-	AnalogPotentiometer buttPot = new AnalogPotentiometer(0);
+	AnalogPotentiometer buttPot = new AnalogPotentiometer(3);
 	ButtPid buttPid             = new ButtPid(0.3, 0.0, 0.0, 0.5);
-	TalonSRX pendulum           = new TalonSRX(0);
-	RobotDrive buttDrive        = new RobotDrive(1, 2);
-	Compressor buttComp         = new Compressor();
+	TalonSRX pendulum           = new TalonSRX(4);
+	RobotDrive buttDrive        = new RobotDrive(0, 1);
+	Compressor buttComp         = new Compressor(1);
 	Solenoid buttPunchy         = new Solenoid(0);
-	Deadband leftDriveDead      = new Deadband(0.15);
-	Deadband rightDriveDead     = new Deadband(0.15);
+
 	
 	
 	
@@ -39,8 +41,9 @@ public class Robot extends IterativeRobot {
 	
 	
     public void robotInit() {
+    	
     	buttComp.start();
-
+    	buttJoy.addFilter(new Deadband(.15), Axes.LEFTy);
 
     }
 
@@ -63,10 +66,10 @@ public class Robot extends IterativeRobot {
     	 * Axis indexes:
 			0 - LeftX
 			1 - LeftY
-			2 - Triggers (Each trigger = 0 to 1, axis value = right - left)
-			3 - RightX
-			4 - RightY
-			5 - DPad Left/Right
+			2 - Left Trigger
+			3 - Right Trigger
+			4 - RightX
+			5 - RightY
 				
 			
 		 * Buttons
@@ -87,26 +90,38 @@ public class Robot extends IterativeRobot {
     	double tAfter  = 0;
     	double tSlept  = 0;
     	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
        /* 
-    	if(buttJoy.justPressed(2)){//should be x button
+    	if(buttJoy.justPressed(3)){//should be x button
     		buttPid.setSetpoint(buttPid.getSetpoint() + .01);
     	}
-    	else if(buttJoy.justPressed(1)){//should be b button
+    	else if(buttJoy.justPressed(2)){//should be b button
     		buttPid.setSetpoint(buttPid.getSetpoint() - .01);
     	}
     	*/
     	
-    	buttPunchy.set(buttJoy.getRawButton(0));
+    	
+    	
+    	if (buttJoy.justPressed(Buttons.A)){
+    		buttPunchy.set(!buttPunchy.get());
+    	}
     	
     	
     	//deadbanding
     	//ahh the finer things in life
     	
-    	double leftStickY  = leftDriveDead.update(buttJoy.getRawAxis(1));
-    	double rightStickY = rightDriveDead.update(buttJoy.getRawAxis(5));
+    	double leftStickY  = buttJoy.getFilteredAxisValue(Axes.LEFTy);
+    	double rightStickY = buttJoy.getFilteredAxisValue(Axes.RIGHTy);
     	
     	
-    	buttDrive.tankDrive(leftStickY, rightStickY);
+    	buttDrive.tankDrive(-leftStickY, -rightStickY);
     	
     	
     	//pid stuffs
@@ -116,7 +131,7 @@ public class Robot extends IterativeRobot {
     		
     	tSlept = tBefore - tAfter;
     	
-    	pendulum.set(buttPid.updatePid(buttPot.get(), tSlept));
+    	//pendulum.set(buttPid.updatePid(buttPot.get(), tSlept));
     		
     	tBefore = System.currentTimeMillis();
 
