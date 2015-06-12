@@ -82,8 +82,6 @@ public class ButtJoystick extends Joystick{
 		if (lastButtonValues[button] != getRawButton(button)){
 			justChanged = true;
 		}
-		
-		
 		lastButtonValues[button] = getRawButton(button);
 		
 		return justChanged;
@@ -98,7 +96,6 @@ public class ButtJoystick extends Joystick{
 		if ((lastButtonValues[button] != getRawButton(button)) && getRawButton(button) == true){
 			justPressed = true;
 		}
-		
 		lastButtonValues[button] = getRawButton(button);//store values
 		
 		return justPressed;
@@ -112,7 +109,6 @@ public class ButtJoystick extends Joystick{
 		if ((lastButtonValues[button] != getRawButton(button)) && getRawButton(button) == false){
 			justReleased = true;
 		}
-		
 		lastButtonValues[button] = getRawButton(button);//store values
 		
 		return justReleased;
@@ -122,13 +118,11 @@ public class ButtJoystick extends Joystick{
 		
 		int button = buttonName.getButtonNum();
 		
-		
 		boolean toggle = false;
 		
 		if ((lastButtonValues[button] != getRawButton(button)) && getRawButton(button) == false){
 			toggle = !toggle;
 		}
-		
 		lastButtonValues[button] = getRawButton(button);//store values
 		
 		return toggle;
@@ -137,15 +131,20 @@ public class ButtJoystick extends Joystick{
 	
 	
 	public void addFilter(Filter filter, Axes axis){
-		ArrayList<Filter> filtersApplied = m_axesFilters.get(axis);
-		filtersApplied.add(filter);
+		
+		if (m_axesFilters.containsKey(axis)){
+			ArrayList<Filter> filtersApplied = m_axesFilters.get(axis);
+			filtersApplied.add(filter);
+		}else{
+			ArrayList<Filter> firstFilter = new ArrayList<Filter>();
+			firstFilter.add(filter);
+			
+			m_axesFilters.put(axis, firstFilter);
+		}
 		
 	}
 	
-	
-	
-	
-	
+
 	public double getFilteredAxisValue(Axes axis){
 		ArrayList<Filter> filtersApplied = m_axesFilters.get(axis);
 		
@@ -157,7 +156,6 @@ public class ButtJoystick extends Joystick{
 		
 		return axisVal;
 	}
-	
 	
 	
 	public double getAxisValue(Axes axis){

@@ -25,10 +25,16 @@ public class Average implements Filter{
 	@Override
 	public double update(double input) {
 		double total = 0;
+		
+		
 		int i = 0;
 		
 		averageArray[i] = input;
 		i ++;
+		
+		if(i > averageArray.length){
+			i = 0;
+		}
 		
 		for(int j = 0; j < averageArray.length; j++){
 			
