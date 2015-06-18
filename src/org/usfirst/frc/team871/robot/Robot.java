@@ -29,7 +29,7 @@ public class Robot extends IterativeRobot {
      */
 	
 	ButtJoystick buttJoy        = new ButtJoystick(0);
-	AnalogInput buttPot         = new AnalogInput(3);
+	AnalogPotentiometer buttPot = new AnalogPotentiometer(3);
 	ButtPid buttPid             = new ButtPid(.25, 0.0, 0.0, 0.5);
 	Victor pendulum             = new Victor(4);
 	RobotDrive buttDrive        = new RobotDrive(0, 1);
@@ -44,6 +44,8 @@ public class Robot extends IterativeRobot {
 	
 	
     public void robotInit() {
+    	
+    	
     	
     	buttComp.start();
     	buttJoy.addFilter(new Deadband(0), Axes.LEFTy);
@@ -118,7 +120,14 @@ public class Robot extends IterativeRobot {
     	
     	buttDrive.tankDrive(-leftStickY, -rightStickY);
     
-    	printer.printThisDouble(buttPot.getValue());
+    	
+    	
+    	if ( buttJoy.justPressed(Buttons.A)){
+    		printer.printThisDouble(buttPot.get());
+    	}else{
+    		printer.printThisDouble(buttPot.get());
+    	}
+    	
     	//pid stuffs
 
     	
