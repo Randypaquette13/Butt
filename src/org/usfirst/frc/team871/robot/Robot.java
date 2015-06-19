@@ -28,14 +28,14 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
 	
-	ButtJoystick buttJoy        = new ButtJoystick(0);
-	AnalogPotentiometer buttPot = new AnalogPotentiometer(3);
-	ButtPid buttPid             = new ButtPid(.25, 0.0, 0.0, 0.5);
-	Victor pendulum             = new Victor(4);
-	RobotDrive buttDrive        = new RobotDrive(0, 1);
-	Compressor buttComp         = new Compressor(1);
-	Solenoid buttPunchy         = new Solenoid(0);
-	ConsolePrint printer        = new ConsolePrint();
+	ButtJoystick buttJoy             = new ButtJoystick(0);
+	LogarithmicPotentiometer buttPot = new LogarithmicPotentiometer(2, 0.07, 2.7);
+	ButtPid buttPid                  = new ButtPid(2.5, 0.0, 0.0, 0.5);
+	Victor pendulum                  = new Victor(4);
+	RobotDrive buttDrive             = new RobotDrive(0, 1);
+	Compressor buttComp              = new Compressor(1);
+	Solenoid buttPunchy              = new Solenoid(0);
+	ConsolePrint printer             = new ConsolePrint();
 
 	
 	
@@ -50,6 +50,7 @@ public class Robot extends IterativeRobot {
     	buttComp.start();
     	buttJoy.addFilter(new Deadband(0), Axes.LEFTy);
     	buttJoy.addFilter(new Deadband(.5), Axes.RIGHTy);
+    	buttJoy.addFilter(new HighPassFilter(.98), Axes.RIGHTy);
     	
     }
 
@@ -96,14 +97,14 @@ public class Robot extends IterativeRobot {
     	double tAfter  = 0;
     	double tSlept  = 0;
     	
-       /* 
-    	if(buttJoy.justPressed(3)){//should be x button
-    		buttPid.setSetpoint(buttPid.getSetpoint() + .01);
+       
+    	if(buttJoy.justReleased(Buttons.X)){//should be x button
+    		buttPid.setSetpoint(buttPid.getSetpoint() + .03);
     	}
-    	else if(buttJoy.justPressed(2)){//should be b button
-    		buttPid.setSetpoint(buttPid.getSetpoint() - .01);
+    	else if(buttJoy.justReleased(Buttons.B)){//should be b button
+    		buttPid.setSetpoint(buttPid.getSetpoint() - .03);
     	}
-    	*/
+    	
     	
     	
     	
@@ -119,14 +120,8 @@ public class Robot extends IterativeRobot {
     	double rightStickY = buttJoy.getFilteredAxisValue(Axes.RIGHTy);
     	
     	buttDrive.tankDrive(-leftStickY, -rightStickY);
-    
     	
-    	
-    	if ( buttJoy.justPressed(Buttons.A)){
-    		printer.printThisDouble(buttPot.get());
-    	}else{
-    		printer.printThisDouble(buttPot.get());
-    	}
+    	printer.printThisDouble(buttPot.get());
     	
     	//pid stuffs
 
@@ -136,7 +131,7 @@ public class Robot extends IterativeRobot {
     	tSlept = tBefore - tAfter;
     	
     	
-    	//pendulum.set(-buttPid.updatePid(buttPot.get(), tSlept));
+    	pendulum.set(buttPid.updatePid(buttPot.get(), tSlept));
     	
     	
     	tBefore = System.currentTimeMillis();

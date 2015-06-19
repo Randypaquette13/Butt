@@ -26,7 +26,7 @@ public class HighPassFilter implements Filter{
 	@Override
 	public double update(double input) {
 		
-		m_highPassOutput += input - (m_output + ((input - m_output) * 0.98));
+		m_highPassOutput += input - (m_output + ((input - m_output) * filterCoeficient));
 		
 		m_output = m_highPassOutput;
 		

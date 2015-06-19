@@ -66,7 +66,7 @@ public class ButtJoystick extends Joystick{
 		super(port);
 	}
 
-	boolean[] lastButtonValues = new boolean[ButtonType.kNumButton.value];
+	boolean[] lastButtonValues = new boolean[8];
 
 	
 	
