@@ -30,7 +30,7 @@ public class Robot extends IterativeRobot {
 	
 	ButtJoystick buttJoy             = new ButtJoystick(0);
 	LogarithmicPotentiometer buttPot = new LogarithmicPotentiometer(2, 0.07, 2.7);
-	ButtPid buttPid                  = new ButtPid(2.5, 0.0, 0.0, 0.5);
+	ButtPid buttPid                  = new ButtPid(9, 0.0, 0.0, 0.5);
 	Victor pendulum                  = new Victor(4);
 	RobotDrive buttDrive             = new RobotDrive(0, 1);
 	Compressor buttComp              = new Compressor(1);
@@ -132,7 +132,7 @@ public class Robot extends IterativeRobot {
     	
     	
     	pendulum.set(buttPid.updatePid(buttPot.get(), tSlept));
-    	
+    	//pendulum.set(buttJoy.getAxisValue(Axes.rTRIGGER) - buttJoy.getAxisValue(Axes.lTRIGGER));
     	
     	tBefore = System.currentTimeMillis();
     	
