@@ -10,7 +10,7 @@ public class ButtPid {
 	double processVariable;
 	double dt;
 	double error;
-	double totalError;
+	double accumulatedError;
 	double pastError = 0;
 
 	
@@ -36,10 +36,10 @@ public class ButtPid {
 		double output;
 		
 		error = processVariable - setpoint;
-		totalError += error;
+		accumulatedError += error;
 		
 		
-		output = (kP * error) + (kI * totalError) + (kD * (pastError - error) / dt);// error/sec
+		output = (kP * error) + (kI * accumulatedError) + (kD * (pastError - error) / dt);// error/sec
 		
 		pastError = error;
 		return output;
